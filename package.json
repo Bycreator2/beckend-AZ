@@ -1,0 +1,21 @@
+{
+  "name": "beckendaz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "emaahh",
+  "license": "ISC",
+  "dependencies": {
+    "dom-parser": "^0.1.6",
+    "express": "^4.18.1",
+    "mongodb": "^4.7.0",
+    "node-fetch": "^3.2.6",
+    "path": "^0.12.7",
+    "primeicons": "^5.0.0",
+    "puppeteer": "^16.2.0"
+  }
+}
