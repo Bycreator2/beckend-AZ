@@ -183,6 +183,69 @@ app.get('/nuoviepisodi', (request, response) => {
 });
 
 
+app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    //email
+    var datiaccount1 = request.params.datiaccount1;
+    //pass
+    var datiaccount2 = request.params.datiaccount2;
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Users").find({Email: datiaccount1, Password: datiaccount2}).toArray(function(err, result) {
+            if (err) throw err;
+                return response.send(result);
+
+                
+            db.close();
+        });
+    });
+
+});
+app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    //username
+    var datiaccount1 = request.params.datiaccount1;
+    //email
+    var datiaccount2 = request.params.datiaccount2;
+    //pass
+    var datiaccount3 = request.params.datiaccount3;
+
+    // current timestamp in milliseconds
+    let ts = Date.now();
+
+    let date_ob = new Date(ts);
+    let date = date_ob.getDate();
+    let month = date_ob.getMonth() + 1;
+    let year = date_ob.getFullYear();
+
+    let finalDate = year + "-" + month + "-" + date;
+
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, Amici: [{Amico: ""}]}, function(err, res) {
+            if (err) throw err;
+            console.log("registato")
+            return response.send("registato");
+            db.close();
+        });
+    });
+
+});
+
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('App is listening on port 5000');
