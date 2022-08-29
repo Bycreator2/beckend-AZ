@@ -42,7 +42,7 @@ app.get('/', (request, response) => {
     return response.send('OK');
 });
 
-app.get('/allanime', (request, response) => {
+/*app.get('/allanime', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -127,27 +127,6 @@ app.get('/cerca/:nomeanime', (request, response) => {
 
 });
 
-app.get('/notizie', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    response.setHeader('Access-Control-Allow-Credentials', true);
-
-    fetch('https://anime.everyeye.it/notizie/')
-        .then(res => res.text())
-        .then(text => {
-            var parser = new DOMParser();
-	        var doc = parser.parseFromString(text, 'text/html');
-            var newsRow = parser.parseFromString(doc.getElementsByClassName('contenuti')[0].innerHTML, 'text/html');
-            return response.send(newsRow);
-            //notizieRow = .getElementsByClassName('col-news');;
-            //return response.send(notizieRow);
-        });
-
-    //let boxNotizie = doc.getElementById('news-row');
-
-});
-
 app.get('/nuoviepisodi', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -205,7 +184,27 @@ app.get('/nuoviepisodi', (request, response) => {
     
 
 });
+*/
+app.get('/notizie', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
 
+    fetch('https://anime.everyeye.it/notizie/')
+        .then(res => res.text())
+        .then(text => {
+            var parser = new DOMParser();
+	        var doc = parser.parseFromString(text, 'text/html');
+            var newsRow = parser.parseFromString(doc.getElementsByClassName('contenuti')[0].innerHTML, 'text/html');
+            return response.send(newsRow);
+            //notizieRow = .getElementsByClassName('col-news');;
+            //return response.send(notizieRow);
+        });
+
+    //let boxNotizie = doc.getElementById('news-row');
+
+});
 
 app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
