@@ -254,15 +254,16 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
 
     let finalDate = year + "-" + month + "-" + date;
 
+    let codiceSegretogenerato = generateString(20)
+
     //db
     MongoClient.connect(uri, function(err, db) {
         if (err) throw err;
         var dbo = db.db("animeDB");
-        dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, Amici: [{Amico: ""}]}, function(err, res) {
+        dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, CodiceRipristino:  codiceSegretogenerato, Amici: [{Amico: ""}]}, function(err, res) {
             if (err) throw err;
             console.log("registato")
 
-            let codiceSegretogenerato = generateString(20)
 
             var mailOptions = {
                 from: ' "AnimeCrowd" <animecrowdinfo@gmail.com>',
