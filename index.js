@@ -5,12 +5,36 @@ const { isMainThread } = require('worker_threads');
 const app = express();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-
+var nodemailer = require('nodemailer');
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 const uri = "mongodb+srv://Emanuele:h297k1fklCm2SMfp@animedata.dsmjr.mongodb.net/test?authSource=admin&replicaSet=atlas-mud1pv-shard-0&readPreference=primary&ssl=true";
+
+//mail di benvenuto
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'animecrowdinfo@gmail.com',
+        pass: 'tiuxjtzynjiycmrt'
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+function generateString(length) {
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+  
 
 
 
@@ -238,6 +262,24 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
         dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, Amici: [{Amico: ""}]}, function(err, res) {
             if (err) throw err;
             console.log("registato")
+
+            let codiceSegretogenerato = generateString(20)
+
+            var mailOptions = {
+                from: ' "AnimeCrowd" <animecrowdinfo@gmail.com>',
+                to: datiaccount2,
+                subject: 'Benvenuto su AnimeCrowd!',
+                text: 'Ciao '+ datiaccount1 +'! E benvenuto su AnimeCrowd😄,\nda adesso in poi puoi accedere a tutti i servizi su animecrowd.it.\nNon ti invieremo più email, quindi per restare aggiornato entra sul canale Telegram: https://t.me/+Bosmk92oY_AzYzM0.\nCodice ripristino password: '+ codiceSegretogenerato +'\nAttenzione! in caso di perdita della password o qualunque altro problema contatta https://t.me/emaaahhh in privato dando questo codice.\nA presto👋\nIl team di AnimeCrowd.it.'
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email inviata a '+ datiaccount2 +': ' + info.response);
+                }
+            });
+
             return response.send("registato");
             db.close();
         });
