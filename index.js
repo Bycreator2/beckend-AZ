@@ -185,6 +185,7 @@ app.get('/nuoviepisodi', (request, response) => {
 
 });
 */
+
 app.get('/notizie', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
