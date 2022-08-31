@@ -288,6 +288,27 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
 
 });
 
+app.get('/background/:link/:email/:pass', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    
+    var link = request.params.link;
+    var email = request.params.email;
+    var pass = request.params.pass;
+
+
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        db.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
+    });
+
+});
+
 
 
 app.listen(process.env.PORT || 5000, () => {
