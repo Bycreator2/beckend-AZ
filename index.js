@@ -304,7 +304,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
     MongoClient.connect(uri, function(err, db) {
         if (err) throw err;
         var dbo = db.db("animeDB");
-        db.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
+        dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
     });
 
 });
