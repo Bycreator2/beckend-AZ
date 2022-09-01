@@ -287,6 +287,30 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
     });
 
 });
+app.get('/check/:datiaccount1', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    //email
+    var datiaccount1 = request.params.datiaccount1;
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Users").find({Email: datiaccount1}).toArray(function(err, result) {
+            if (err) throw err;
+                return response.send(result);
+
+                
+            db.close();
+        });
+    });
+
+});
+
 
 app.get('/background/:link/:email/:pass', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
