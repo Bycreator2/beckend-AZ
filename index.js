@@ -261,7 +261,11 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
     MongoClient.connect(uri, function(err, db) {
         if (err) throw err;
         var dbo = db.db("animeDB");
-        dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, CodiceRipristino:  codiceSegretogenerato, Amici: [{Amico: ""}]}, function(err, res) {
+        if(dbo.collection("Users").find({Email: datiaccount2})){
+            return response.send("1");
+            db.close();
+        }else{
+            dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, CodiceRipristino:  codiceSegretogenerato, Amici: [{Amico: ""}]}, function(err, res) {
             if (err) throw err;
             console.log("registato")
 
@@ -284,6 +288,7 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
             return response.send("registato");
             db.close();
         });
+        }
     });
 
 });
