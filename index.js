@@ -35,7 +35,7 @@ function generateString(length) {
     return result;
 }
   
-const clientAutorizzato = 'https://www.animecrowd.it/';
+const clientAutorizzato = 'https://www.animecrowd.it';
 
 
 app.get('/', (request, response) => {
