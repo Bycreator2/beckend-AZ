@@ -35,7 +35,7 @@ function generateString(length) {
     return result;
 }
   
-const clientAutorizzato = 'https://www.animecrowd.it';
+
 
 
 app.get('/', (request, response) => {
@@ -43,7 +43,7 @@ app.get('/', (request, response) => {
 });
 
 /*app.get('/allanime', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -63,7 +63,7 @@ app.get('/', (request, response) => {
 });
 
 app.get('/nuovianime', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -83,7 +83,7 @@ app.get('/nuovianime', (request, response) => {
 });
 
 app.get('/animeid/:idanime', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -106,7 +106,7 @@ app.get('/animeid/:idanime', (request, response) => {
 });
 
 app.get('/cerca/:nomeanime', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -128,7 +128,7 @@ app.get('/cerca/:nomeanime', (request, response) => {
 });
 
 app.get('/nuoviepisodi', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -187,7 +187,7 @@ app.get('/nuoviepisodi', (request, response) => {
 */
 
 app.get('/notizie', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -208,7 +208,7 @@ app.get('/notizie', (request, response) => {
 });
 
 app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -233,7 +233,7 @@ app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
 
 });
 app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -288,7 +288,7 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
 
 });
 app.get('/check/:datiaccount1', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
@@ -313,7 +313,7 @@ app.get('/check/:datiaccount1', (request, response) => {
 
 
 app.get('/background/:link/:email/:pass', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', clientAutorizzato);
+    response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
