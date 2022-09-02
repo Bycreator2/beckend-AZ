@@ -36,7 +36,7 @@ function generateString(length) {
     return result;
 }
 var corsOptions = {
-    origin: 'http://localhost:8080',
+    origin: 'https://www.animecrowd.it/',
     optionsSuccessStatus: 200 // For legacy browser support
 }
 
