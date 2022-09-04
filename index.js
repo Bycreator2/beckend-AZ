@@ -270,7 +270,7 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
                 from: ' "AnimeCrowd" <animecrowdinfo@gmail.com>',
                 to: datiaccount2,
                 subject: 'Benvenuto su AnimeCrowd!',
-                text: 'Ciao '+ datiaccount1 +'! E benvenuto su AnimeCrowd😄,\nda adesso in poi puoi accedere a tutti i servizi su animecrowd.it.\nNon ti invieremo più email, quindi per restare aggiornato entra sul canale Telegram: https://t.me/+Bosmk92oY_AzYzM0.\nCodice ripristino password: '+ codiceSegretogenerato +'\nAttenzione! in caso di perdita della password o qualunque altro problema contatta https://t.me/emaaahhh in privato dando questo codice.\nA presto👋\nIl team di AnimeCrowd.it.'
+                text: 'Ciao '+ datiaccount1 +'! Benvenuto su AnimeCrowd.it 😄,\nda adesso in poi puoi accedere a tutti i servizi presenti sul sito.\nNon riceverai più email, quindi per restare aggiornato seguici sul nostro canale Telegram: https://t.me/+Bosmk92oY_AzYzM0.\nCodice ripristino password: '+ codiceSegretogenerato +'\nAttenzione! Se non ricordi più la tua password o hai qualunque altro problema contatta https://t.me/emaaahhh e fornisci questo codice.\nA presto👋\nIl team di AnimeCrowd.it.'
             };
 
             transporter.sendMail(mailOptions, function(error, info){
