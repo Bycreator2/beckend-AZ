@@ -326,6 +326,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
     var email = request.params.email;
     var pass = request.params.pass;
 
+    console.log(request.headers["X-API-Key"])
 
     //db
     MongoClient.connect(uri, function(err, db) {
