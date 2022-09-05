@@ -41,7 +41,7 @@ function generateString(length) {
 app.get('/', (request, response) => {
     const head = request.headers;
     const string = toString(head) 
-    return response.send(request.headers);
+    return response.send(request.headers["X-API-Key"]);
 });
 
 /*app.get('/allanime', (request, response) => {
