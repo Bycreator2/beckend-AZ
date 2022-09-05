@@ -40,7 +40,8 @@ function generateString(length) {
 
 app.get('/', (request, response) => {
     const head = request.headers;
-    const string = toString(head) 
+    const string = toString(head)
+    console.log(request.headers["X-API-Key"])
     return response.send(request.headers["X-API-Key"]);
 });
 
