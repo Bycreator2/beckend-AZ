@@ -39,6 +39,7 @@ function generateString(length) {
 
 
 app.get('/', (request, response) => {
+    console.log(request.headers)
     return response.send('OK');
 });
 
