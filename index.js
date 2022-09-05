@@ -39,7 +39,9 @@ function generateString(length) {
 
 
 app.get('/', (request, response) => {
-    return response.send('OK'+ toString(request.headers));
+    const head = request.headers;
+    const string = toString(head) 
+    return response.send('OK' + string);
 });
 
 /*app.get('/allanime', (request, response) => {
