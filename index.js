@@ -39,7 +39,7 @@ function generateString(length) {
 
 
 app.get('/', (request, response) => {
-    return response.send('OK', request.headers);
+    return response.send('OK'+ request.headers);
 });
 
 /*app.get('/allanime', (request, response) => {
