@@ -34,7 +34,7 @@ function generateString(length) {
 
     return result;
 }
-  
+
 
 
 
@@ -337,6 +337,30 @@ app.get('/background/:link/:email/:pass', (request, response) => {
 
 });
 
+
+app.get('/trovautente/:tag', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    
+    var tag = request.params.tag;
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
+            if (err) throw err;
+                
+                return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
+                
+            db.close();
+        });
+    });
+
+});
 
 
 app.listen(process.env.PORT || 5000, () => {
