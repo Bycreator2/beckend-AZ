@@ -407,3 +407,6 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
 
 
 
+app.listen(process.env.PORT || 5000, () => {
+    console.log('App is listening on port 5000');
+});
