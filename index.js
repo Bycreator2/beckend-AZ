@@ -377,7 +377,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
     
     var myemail = request.params.myemail;
     var mypass = request.params.mypass;
-    var userid = ObjectId(request.params.userid);
+    var userid = request.params.userid;
     
     //db
     MongoClient.connect(uri, function(err, db) {
