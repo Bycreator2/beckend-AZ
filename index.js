@@ -347,19 +347,23 @@ app.get('/trovautente/:tag', (request, response) => {
     
     
     var tag = request.params.tag;
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
+
+    if(tag != undefined) {
+        //db
+        MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
-                
-                return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
-                
-            db.close();
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
+                if (err) throw err;
+                    
+                    return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
+                    
+                db.close();
+            });
         });
-    });
+    }else{
+        return
+    }
 
 });
 
@@ -388,7 +392,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
             
 
             dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
-                oldPinUserArr.push({_id: userid, Nome: resultuser[0].NomeUtente, AvatarUser: resultuser[0].Avatar, Confermato: false});
+                oldPinUserArr.push({_id: userid});
 
                 dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
 
