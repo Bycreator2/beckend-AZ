@@ -333,6 +333,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
         if (err) throw err;
         var dbo = db.db("animeDB");
         dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
+        db.close();
     });
 
 });
@@ -357,6 +358,44 @@ app.get('/trovautente/:tag', (request, response) => {
                 return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
                 
             db.close();
+        });
+    });
+
+});
+
+
+app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    
+    var myemail = request.params.myemail;
+    var mypass = request.params.mypass;
+    var userid = request.params.userid;
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+                
+        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+            if (err) throw err;
+
+            var oldPinUserArr = result[0].Amici
+            
+
+            dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
+                oldPinUserArr.push({_id: userid, Nome: resultuser[0].NomeUtente, AvatarUser: resultuser[0].Avatar, Confermato: false});
+
+                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+
+                return response.send("OK");
+                db.close();
+            });
+                        
         });
     });
 
