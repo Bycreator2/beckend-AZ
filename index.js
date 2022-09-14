@@ -333,7 +333,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
         if (err) throw err;
         var dbo = db.db("animeDB");
         dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
-        db.close();
+
     });
 
 });
