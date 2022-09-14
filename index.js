@@ -346,7 +346,7 @@ app.get('/trovautente/:tag', (request, response) => {
     response.setHeader('Access-Control-Allow-Credentials', true);
     
     
-    var tag = request.params.tag;
+    var tag = ObjectId(request.params.tag)
 
     if(tag != undefined) {
         //db
@@ -377,7 +377,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
     
     var myemail = request.params.myemail;
     var mypass = request.params.mypass;
-    var userid = request.params.userid;
+    var userid = ObjectId(drequest.params.userid);
     
     //db
     MongoClient.connect(uri, function(err, db) {
