@@ -392,7 +392,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
 
                 dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
 
-                return response.send([{OK: OK}]);
+                return response.send(resultuser[0].NomeUtente);
                 db.close();
             });
                         
