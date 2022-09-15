@@ -180,9 +180,19 @@ app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
     MongoClient.connect(uri, function(err, db) {
         if (err) throw err;
         var dbo = db.db("animeDB");
+        var totalresult;
         dbo.collection("Anime").find({"Nome" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, result) {
                 if (err) throw err;
-                    return response.send(result);
+
+                totalresult = result
+
+                dbo.collection("Users").find({"NomeUtente" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, results) {
+                    if (err) throw err;
+                        totalresult.push(results)
+                        return response.send(totalresult);
+                    db.close();
+                });
+
                 db.close();
             });
         });
