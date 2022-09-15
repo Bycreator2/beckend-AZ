@@ -461,7 +461,8 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
     
     var myemail = request.params.myemail;
     var mypass = request.params.mypass;
-    
+
+
     //db
     MongoClient.connect(uri, function(err, db) {
         
@@ -472,19 +473,32 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
             if (err) throw err;
         
                 var listaFolow = result[0].Amici;
+                console.log(listaFolow)
                 var newlistaFolow = []
-                listaFolow.forEach(element => {
 
-                    dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
-                        if (err) throw err;
-                        newlistaFolow.push({Tag: results[0]._id, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
-                    });
+                /*function finito(){
+                    return response.send(newlistaFolow);
+                }*/
+                
+
+                result[0].Amici.forEach((element, index, array) => {
+
                     
+                    
+                    if(element._id != undefined){
+                        
+                        dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
+                            if (err) throw err;
+                            newlistaFolow.push({Tag: results[0]._id, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
+                            console.log(newlistaFolow)
+                            if (index+1 === array.length) {response.send(newlistaFolow);}
+                        });
+                    }
+
                 });
 
-                return response.send(newlistaFolow);
+                
 
-                db.close();
                         
         });
     });
