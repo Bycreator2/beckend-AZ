@@ -108,28 +108,6 @@ app.get('/animeid/:idanime', (request, response) => {
 
 });
 
-app.get('/cerca/:nomeanime', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', '*');
-    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    response.setHeader('Access-Control-Allow-Credentials', true);
-
-    var animedacercare = request.params.nomeanime;
-
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Anime").find({"Nome" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, result) {
-                if (err) throw err;
-                    return response.send(result);
-                db.close();
-            });
-        });
-
-});
-
 app.get('/nuoviepisodi', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -188,6 +166,28 @@ app.get('/nuoviepisodi', (request, response) => {
 
 });
 */
+
+app.get('/cerca/:nomeanime', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+
+    var animedacercare = request.params.nomeanime;
+
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Anime").find({"Nome" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, result) {
+                if (err) throw err;
+                    return response.send(result);
+                db.close();
+            });
+        });
+
+});
 
 app.get('/notizie', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
