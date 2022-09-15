@@ -188,12 +188,11 @@ app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
 
                 dbo.collection("Users").find({"NomeUtente" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, results) {
                     if (err) throw err;
-                        totalresult.push(results)
+                        totalresult = totalresult.concat(results)
                         return response.send(totalresult);
                     db.close();
                 });
 
-                db.close();
             });
         });
 
