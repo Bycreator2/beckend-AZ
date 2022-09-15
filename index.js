@@ -432,7 +432,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                 function arrayRemove(arr, value) { 
     
                     return arr.filter(function(ele){ 
-                        return ele != value; 
+                        return ele._id != value; 
                     });
                 }
 
