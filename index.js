@@ -167,13 +167,13 @@ app.get('/nuoviepisodi', (request, response) => {
 });
 */
 
-app.get('/cerca/:nomeanime', (request, response) => {
+app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     response.setHeader('Access-Control-Allow-Credentials', true);
 
-    var animedacercare = request.params.nomeanime;
+    var animedacercare = request.params.nomeanimeutente;
 
     
     //db
