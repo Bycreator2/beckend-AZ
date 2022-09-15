@@ -477,7 +477,7 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
 
                     dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
                         if (err) throw err;
-                        newlistaFolow.push({Tag: results[0].tag, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
+                        newlistaFolow.push({Tag: results[0]._id, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
                     });
                     
                 });
