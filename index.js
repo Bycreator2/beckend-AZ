@@ -404,6 +404,52 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
     });
 
 });
+app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    
+    
+    var myemail = request.params.myemail;
+    var mypass = request.params.mypass;
+    var userid = request.params.userid;
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+                
+        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+            if (err) throw err;
+
+            var oldPinUserArr = result[0].Amici
+            
+
+            dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
+
+                function arrayRemove(arr, value) { 
+    
+                    return arr.filter(function(ele){ 
+                        return ele != value; 
+                    });
+                }
+
+                var result = arrayRemove(oldPinUserArr, userid);
+
+
+                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: result}})
+                
+
+                return response.send(resultuser[0].NomeUtente);
+                db.close();
+            });
+                        
+        });
+    });
+
+});
 
 
 
