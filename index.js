@@ -502,6 +502,8 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
                             console.log(newlistaFolow)
                             if (index+1 === array.length) {response.send(newlistaFolow);}
                         });
+                    }else{
+                        return response.send([]);
                     }
 
                 });
