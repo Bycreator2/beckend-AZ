@@ -9,9 +9,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 var nodemailer = require('nodemailer');
 
 var cors = require('cors');
-app.use(cors({
-    origin: ['http://192.168.1.144:8080/', 'https://animecrowd.it/']
-}));
+app.use(cors());
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
@@ -52,7 +50,7 @@ app.get('/', (request, response) => {
 });
 
 /*app.get('/allanime', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -70,7 +68,7 @@ app.get('/', (request, response) => {
 });
 
 app.get('/nuovianime', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -88,7 +86,7 @@ app.get('/nuovianime', (request, response) => {
 });
 
 app.get('/animeid/:idanime', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
 
     var idanime = request.params.idanime;
@@ -109,7 +107,7 @@ app.get('/animeid/:idanime', (request, response) => {
 });
 
 app.get('/nuoviepisodi', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     var dati;
@@ -166,7 +164,7 @@ app.get('/nuoviepisodi', (request, response) => {
 */
 
 app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     var animedacercare = request.params.nomeanimeutente;
 
@@ -194,7 +192,7 @@ app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
 });
 
 app.get('/notizie', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
 
@@ -218,7 +216,7 @@ app.get('/notizie', (request, response) => {
 });
 
 app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
     
     //email
     var datiaccount1 = request.params.datiaccount1;
@@ -240,7 +238,7 @@ app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
 
 });
 app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     //username
     var datiaccount1 = request.params.datiaccount1;
@@ -292,7 +290,7 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
 
 });
 app.get('/check/:datiaccount1', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     //email
@@ -315,7 +313,7 @@ app.get('/check/:datiaccount1', (request, response) => {
 
 
 app.get('/background/:link/:email/:pass', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -337,7 +335,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
 
 
 app.get('/trovautente/:tag', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -364,7 +362,7 @@ app.get('/trovautente/:tag', (request, response) => {
 
 
 app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -399,7 +397,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
 });
 
 app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
@@ -444,7 +442,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
 });
 
 app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
-
+    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
     
