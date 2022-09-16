@@ -482,7 +482,10 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
             if (err) throw err;
         
                 var listaFolow = result[0].Amici;
-                console.log(listaFolow)
+                console.log(listaFolow.length)
+                if(listaFolow.length == 1){
+                    response.send([]);
+                }
                 var newlistaFolow = []
 
                 /*function finito(){
@@ -502,8 +505,6 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
                             console.log(newlistaFolow)
                             if (index+1 === array.length) {response.send(newlistaFolow);}
                         });
-                    }else{
-                        return response.send([]);
                     }
 
                 });
