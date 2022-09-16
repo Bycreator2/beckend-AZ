@@ -8,6 +8,8 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 
 var nodemailer = require('nodemailer');
 
+var cors = require('cors');
+app.use(cors());
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
