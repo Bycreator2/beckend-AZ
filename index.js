@@ -494,7 +494,7 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
 
                     
                     
-                    if(element._id){
+                    if(element._id != undefined){
                         
                         dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
                             if (err) throw err;
