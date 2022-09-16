@@ -5,6 +5,19 @@ const { isMainThread } = require('worker_threads');
 const app = express();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+var cors = require('cors')
+
+var whitelist = ['http://192.168.1.144:8080', 'http://example2.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+ }
+}
+
 var nodemailer = require('nodemailer');
 
 //DB
@@ -38,7 +51,7 @@ function generateString(length) {
 
 
 
-app.get('/', (request, response) => {
+app.get('/', cors(corsOptions), (request, response) => {
     const head = request.headers;
     const string = toString(head)
     console.log(request.headers["X-API-Key"])
@@ -167,7 +180,7 @@ app.get('/nuoviepisodi', (request, response) => {
 });
 */
 
-app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
+app.get('/cercaanimuser/:nomeanimeutente', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -198,7 +211,7 @@ app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
 
 });
 
-app.get('/notizie', (request, response) => {
+app.get('/notizie', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -219,7 +232,7 @@ app.get('/notizie', (request, response) => {
 
 });
 
-app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
+app.get('/account/:datiaccount1/:datiaccount2', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -244,7 +257,7 @@ app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
     });
 
 });
-app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, response) => {
+app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -299,7 +312,7 @@ app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, respons
     });
 
 });
-app.get('/check/:datiaccount1', (request, response) => {
+app.get('/check/:datiaccount1', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -324,7 +337,7 @@ app.get('/check/:datiaccount1', (request, response) => {
 });
 
 
-app.get('/background/:link/:email/:pass', (request, response) => {
+app.get('/background/:link/:email/:pass', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -348,7 +361,7 @@ app.get('/background/:link/:email/:pass', (request, response) => {
 });
 
 
-app.get('/trovautente/:tag', (request, response) => {
+app.get('/trovautente/:tag', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -377,7 +390,7 @@ app.get('/trovautente/:tag', (request, response) => {
 });
 
 
-app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
+app.get('/pinUser/:myemail/:mypass/:userid', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -414,7 +427,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
 
 });
 
-app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
+app.get('/removepinUser/:myemail/:mypass/:userid', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -461,7 +474,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
 
 });
 
-app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
+app.get('/serchFollow/:myemail/:mypass/', cors(corsOptions), (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');

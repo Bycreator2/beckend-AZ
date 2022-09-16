@@ -10,10 +10,15 @@
   "author": "emaahh",
   "license": "ISC",
   "dependencies": {
+    "Buffer": "0.0.0",
+    "cors": "^2.8.5",
     "dom-parser": "^0.1.6",
     "express": "^4.18.1",
     "mongodb": "^4.7.0",
     "node-fetch": "^3.2.6",
     "nodemailer": "^6.7.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.1"
   }
 }
