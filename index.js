@@ -194,8 +194,8 @@ app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
 app.get('/notizie', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-
-    fetch('https://anime.everyeye.it/notizie/')
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        fetch('https://anime.everyeye.it/notizie/')
         .then(res => res.text())
         .then(text => {
             var parser = new DOMParser();
@@ -208,6 +208,9 @@ app.get('/notizie', (request, response) => {
 
     //let boxNotizie = doc.getElementById('news-row');
 
+    }
+
+    
 });
 
 app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
