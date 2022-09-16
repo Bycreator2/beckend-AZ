@@ -166,28 +166,34 @@ app.get('/nuoviepisodi', (request, response) => {
 app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-    var animedacercare = request.params.nomeanimeutente;
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
 
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        var totalresult;
-        dbo.collection("Anime").find({"Nome" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, result) {
-                if (err) throw err;
+        var animedacercare = request.params.nomeanimeutente;
 
-                totalresult = result
-
-                dbo.collection("Users").find({"NomeUtente" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, results) {
+        
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+            var totalresult;
+            dbo.collection("Anime").find({"Nome" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, result) {
                     if (err) throw err;
-                        totalresult = totalresult.concat(results)
-                        return response.send(totalresult);
-                    db.close();
-                });
 
+                    totalresult = result
+
+                    dbo.collection("Users").find({"NomeUtente" : {$regex : animedacercare, $options: 'i'}}).toArray(function(err, results) {
+                        if (err) throw err;
+                            totalresult = totalresult.concat(results)
+                            return response.send(totalresult);
+                        db.close();
+                    });
+
+                });
             });
-        });
+
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
@@ -217,97 +223,109 @@ app.get('/notizie', (request, response) => {
 
 app.get('/account/:datiaccount1/:datiaccount2', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
-    
-    //email
-    var datiaccount1 = request.params.datiaccount1;
-    //pass
-    var datiaccount2 = request.params.datiaccount2;
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Users").find({Email: datiaccount1, Password: datiaccount2}).toArray(function(err, result) {
-            if (err) throw err;
-                return response.send(result);
 
-                
-            db.close();
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        //email
+        var datiaccount1 = request.params.datiaccount1;
+        //pass
+        var datiaccount2 = request.params.datiaccount2;
+        
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").find({Email: datiaccount1, Password: datiaccount2}).toArray(function(err, result) {
+                if (err) throw err;
+                    return response.send(result);
+
+                    
+                db.close();
+            });
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
+
 app.get('/register/:datiaccount1/:datiaccount2/:datiaccount3', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-    //username
-    var datiaccount1 = request.params.datiaccount1;
-    //email
-    var datiaccount2 = request.params.datiaccount2;
-    //pass
-    var datiaccount3 = request.params.datiaccount3;
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        //username
+        var datiaccount1 = request.params.datiaccount1;
+        //email
+        var datiaccount2 = request.params.datiaccount2;
+        //pass
+        var datiaccount3 = request.params.datiaccount3;
 
-    // current timestamp in milliseconds
-    let ts = Date.now();
+        // current timestamp in milliseconds
+        let ts = Date.now();
 
-    let date_ob = new Date(ts);
-    let date = date_ob.getDate();
-    let month = date_ob.getMonth() + 1;
-    let year = date_ob.getFullYear();
+        let date_ob = new Date(ts);
+        let date = date_ob.getDate();
+        let month = date_ob.getMonth() + 1;
+        let year = date_ob.getFullYear();
 
-    let finalDate = year + "-" + month + "-" + date;
+        let finalDate = year + "-" + month + "-" + date;
 
-    let codiceSegretogenerato = generateString(20)
+        let codiceSegretogenerato = generateString(20)
 
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, CodiceRipristino:  codiceSegretogenerato, Amici: [{Amico: ""}]}, function(err, res) {
+        //db
+        MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
-            console.log("registato")
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").insertOne({NomeUtente: datiaccount1, Email: datiaccount2, Password: datiaccount3, Avatar: "https://i.imgur.com/WMw4pS1.png", DataAccount: finalDate, CodiceRipristino:  codiceSegretogenerato, Amici: [{Amico: ""}]}, function(err, res) {
+                if (err) throw err;
+                console.log("registato")
 
 
-            var mailOptions = {
-                from: ' "AnimeCrowd" <animecrowdinfo@gmail.com>',
-                to: datiaccount2,
-                subject: 'Benvenuto su AnimeCrowd!',
-                text: 'Ciao '+ datiaccount1 +'! Benvenuto su AnimeCrowd.it 😄,\nda adesso in poi puoi accedere a tutti i servizi presenti sul sito.\nNon riceverai più email, quindi per restare aggiornato seguici sul nostro canale Telegram: https://t.me/+Bosmk92oY_AzYzM0.\nCodice ripristino password: '+ codiceSegretogenerato +'\nAttenzione! Se non ricordi più la tua password o hai qualunque altro problema contatta https://t.me/emaaahhh e fornisci questo codice.\nA presto👋\nIl team di AnimeCrowd.it.'
-            };
+                var mailOptions = {
+                    from: ' "AnimeCrowd" <animecrowdinfo@gmail.com>',
+                    to: datiaccount2,
+                    subject: 'Benvenuto su AnimeCrowd!',
+                    text: 'Ciao '+ datiaccount1 +'! Benvenuto su AnimeCrowd.it 😄,\nda adesso in poi puoi accedere a tutti i servizi presenti sul sito.\nNon riceverai più email, quindi per restare aggiornato seguici sul nostro canale Telegram: https://t.me/+Bosmk92oY_AzYzM0.\nCodice ripristino password: '+ codiceSegretogenerato +'\nAttenzione! Se non ricordi più la tua password o hai qualunque altro problema contatta https://t.me/emaaahhh e fornisci questo codice.\nA presto👋\nIl team di AnimeCrowd.it.'
+                };
 
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email inviata a '+ datiaccount2 +': ' + info.response);
-                }
+                transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email inviata a '+ datiaccount2 +': ' + info.response);
+                    }
+                });
+
+                return response.send("registato");
+                db.close();
             });
-
-            return response.send("registato");
-            db.close();
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 app.get('/check/:datiaccount1', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-    
-    //email
-    var datiaccount1 = request.params.datiaccount1;
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Users").find({Email: datiaccount1}).toArray(function(err, result) {
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        //email
+        var datiaccount1 = request.params.datiaccount1;
+        
+        //db
+        MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
-                return response.send(result);
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").find({Email: datiaccount1}).toArray(function(err, result) {
+                if (err) throw err;
+                    return response.send(result);
 
-                
-            db.close();
+                    
+                db.close();
+            });
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
@@ -316,20 +334,23 @@ app.get('/background/:link/:email/:pass', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    
-    var link = request.params.link;
-    var email = request.params.email;
-    var pass = request.params.pass;
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var link = request.params.link;
+        var email = request.params.email;
+        var pass = request.params.pass;
 
-    console.log(request.headers["X-API-Key"])
+        console.log(request.headers["X-API-Key"])
 
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Sfondo: link}})
 
-    });
+        });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
@@ -338,24 +359,27 @@ app.get('/trovautente/:tag', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    
-    var tag = ObjectId(request.params.tag)
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var tag = ObjectId(request.params.tag)
 
-    if(tag != undefined) {
-        //db
-        MongoClient.connect(uri, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("animeDB");
-            dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
+        if(tag != undefined) {
+            //db
+            MongoClient.connect(uri, function(err, db) {
                 if (err) throw err;
-                    
-                    return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
-                    
-                db.close();
+                var dbo = db.db("animeDB");
+                dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
+                    if (err) throw err;
+                        
+                        return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount}]);
+                        
+                    db.close();
+                });
             });
-        });
+        }else{
+            return
+        }
     }else{
-        return
+        return response.send('non sei autorizato');
     }
 
 });
@@ -365,34 +389,37 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    
-    var myemail = request.params.myemail;
-    var mypass = request.params.mypass;
-    var userid = request.params.userid;
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var myemail = request.params.myemail;
+        var mypass = request.params.mypass;
+        var userid = request.params.userid;
         
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-                
-        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
-            if (err) throw err;
-
-            var oldPinUserArr = result[0].Amici
+        //db
+        MongoClient.connect(uri, function(err, db) {
             
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+                    
+            dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+                if (err) throw err;
 
-            dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
-                oldPinUserArr.push({_id: userid});
+                var oldPinUserArr = result[0].Amici
+                
 
-                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+                dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
+                    oldPinUserArr.push({_id: userid});
 
-                return response.send(resultuser[0].NomeUtente);
-                db.close();
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+
+                    return response.send(resultuser[0].NomeUtente);
+                    db.close();
+                });
+                            
             });
-                        
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
@@ -400,44 +427,47 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    
-    var myemail = request.params.myemail;
-    var mypass = request.params.mypass;
-    var userid = request.params.userid;
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var myemail = request.params.myemail;
+        var mypass = request.params.mypass;
+        var userid = request.params.userid;
         
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-                
-        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
-            if (err) throw err;
-
-            var oldPinUserArr = result[0].Amici
+        //db
+        MongoClient.connect(uri, function(err, db) {
             
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+                    
+            dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+                if (err) throw err;
 
-            dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
-
-                function arrayRemove(arr, value) { 
-    
-                    return arr.filter(function(ele){ 
-                        return ele._id != value; 
-                    });
-                }
-
-                var result = arrayRemove(oldPinUserArr, userid);
-
-
-                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: result}})
+                var oldPinUserArr = result[0].Amici
                 
 
-                return response.send(resultuser[0].NomeUtente);
-                db.close();
+                dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
+
+                    function arrayRemove(arr, value) { 
+        
+                        return arr.filter(function(ele){ 
+                            return ele._id != value; 
+                        });
+                    }
+
+                    var result = arrayRemove(oldPinUserArr, userid);
+
+
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: result}})
+                    
+
+                    return response.send(resultuser[0].NomeUtente);
+                    db.close();
+                });
+                            
             });
-                        
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
@@ -445,53 +475,56 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    
-    var myemail = request.params.myemail;
-    var mypass = request.params.mypass;
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var myemail = request.params.myemail;
+        var mypass = request.params.mypass;
 
 
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-                
-        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            
             if (err) throw err;
-        
-                var listaFolow = result[0].Amici;
-                console.log(listaFolow.length)
-                if(listaFolow.length == 1){
-                    response.send([]);
-                }
-                var newlistaFolow = []
-
-                /*function finito(){
-                    return response.send(newlistaFolow);
-                }*/
-                
-
-                result[0].Amici.forEach((element, index, array) => {
-
+            var dbo = db.db("animeDB");
                     
-                    
-                    if(element._id != undefined){
-                        
-                        dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
-                            if (err) throw err;
-                            newlistaFolow.push({Tag: results[0]._id, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
-                            console.log(newlistaFolow)
-                            if (index+1 === array.length) {response.send(newlistaFolow);}
-                        });
+            dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+                if (err) throw err;
+            
+                    var listaFolow = result[0].Amici;
+                    console.log(listaFolow.length)
+                    if(listaFolow.length == 1){
+                        response.send([]);
                     }
+                    var newlistaFolow = []
 
-                });
+                    /*function finito(){
+                        return response.send(newlistaFolow);
+                    }*/
+                    
 
-                
+                    result[0].Amici.forEach((element, index, array) => {
 
                         
+                        
+                        if(element._id != undefined){
+                            
+                            dbo.collection("Users").find({_id : ObjectId(element._id)}).toArray(function(err, results) {
+                                if (err) throw err;
+                                newlistaFolow.push({Tag: results[0]._id, NomeUtente: results[0].NomeUtente, Avatar: results[0].Avatar, DataAccount: results[0].DataAccount})
+                                console.log(newlistaFolow)
+                                if (index+1 === array.length) {response.send(newlistaFolow);}
+                            });
+                        }
+
+                    });
+
+                    
+
+                            
+            });
         });
-    });
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
