@@ -528,6 +528,29 @@ app.get('/serchFollow/:myemail/:mypass/', (request, response) => {
 
 });
 
+app.get('/avatar/:link/:email/:pass', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var link = request.params.link;
+        var email = request.params.email;
+        var pass = request.params.pass;
+
+
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+            dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {Avatar: link}})
+
+        });
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('App is listening on port 5000');
