@@ -472,7 +472,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                         });
                     }
 
-                    var result = arrayRemove(oldPinUserArr, ObjectId(userid));
+                    var result = arrayRemove(oldPinUserArr, userid);
 
 
                     var oldMiSeguono;
