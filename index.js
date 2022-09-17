@@ -465,10 +465,10 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                         });
                     }
 
-                    function arrayRemovebuhhh(arr, value) { 
+                    function arrayRemovebuhhh(arre, valuee) { 
         
-                        return arr.filter(function(ele){ 
-                            return ele._id.toString() != value.toString(); 
+                        return arre.filter(function(ele){ 
+                            return ele._id.toString() != valuee.toString(); 
                         });
                     }
 
