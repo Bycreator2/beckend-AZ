@@ -469,7 +469,10 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                     function arrayRemovebuhhh(arre, valuee) { 
         
                         return arre.filter(function(ele){ 
-                            return ele._id.toString() != valuee.toString(); 
+                            if(ele._id != undefined){
+                                return ele._id.toString() != valuee.toString(); 
+                            }
+                            
                         });
                     }
 
