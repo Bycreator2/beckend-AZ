@@ -410,11 +410,9 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
                     oldPinUserArr.push({_id: userid});
                     var oldMiSeguono;
                     var newMiSeguono;
+
                     console.log(resultuser[0].MiSeguono)
-                    if(resultuser[0].MiSeguono != undefined) {
-                        oldMiSeguono = resultuser[0].MiSeguono
-                        newMiSeguono = oldMiSeguono.push({_id: myid})
-                    }else if(resultuser[0].MiSeguono.length == 0){
+                    if(resultuser[0].MiSeguono) {
                         oldMiSeguono = resultuser[0].MiSeguono
                         newMiSeguono = oldMiSeguono.push({_id: myid})
                     }
