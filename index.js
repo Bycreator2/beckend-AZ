@@ -416,7 +416,7 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
                         newMiSeguono = oldMiSeguono.push({_id: myid})
                     }
                     else{
-                        oldMiSeguono = [{no:'no'},{_id: myid}]
+                        oldMiSeguono = [{_id:'no'},{_id: myid}]
                         newMiSeguono = oldMiSeguono
                     }
 
