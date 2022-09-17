@@ -415,17 +415,25 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
                     if(resultuser[0].MiSeguono) {
                         oldMiSeguono = resultuser[0].MiSeguono
                         newMiSeguono = oldMiSeguono.push({_id: myid})
+
+                        dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: oldMiSeguono}})
+                        dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+
+                        return response.send(resultuser[0].NomeUtente);
                     }
                     else{
                         oldMiSeguono = [{_id:'no'},{_id: myid}]
                         newMiSeguono = oldMiSeguono
+
+                        dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
+                        dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+
+                        return response.send(resultuser[0].NomeUtente);
                     }
 
-                    dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
-                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
+                    /*dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})*/
 
-                    return response.send(resultuser[0].NomeUtente);
-                    db.close();
                 });
                             
             });
