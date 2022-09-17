@@ -438,7 +438,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    //if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
         var myemail = request.params.myemail;
         var mypass = request.params.mypass;
         var userid = request.params.userid;
@@ -453,7 +453,7 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                 if (err) throw err;
 
                 var oldPinUserArr = result[0].Amici
-                var myId = ObjectId(result[0]._id);
+                var myId = result[0]._id;
                 
 
                 dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
@@ -465,21 +465,26 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                         });
                     }
 
+                    function arrayRemovebuhhh(arr, value) { 
+        
+                        return arr.filter(function(ele){ 
+                            return ele._id.toString() != value.toString(); 
+                        });
+                    }
+
                     var result = arrayRemove(oldPinUserArr, ObjectId(userid));
+
 
                     var oldMiSeguono;
                     var newMiSeguono;
                     
                     oldMiSeguono = resultuser[0].MiSeguono
-                    newMiSeguono = arrayRemove(oldMiSeguono, myId);
 
-                    console.log(resultuser[0].MiSeguono)
-                    console.log(newMiSeguono)
-                    
+                    newMiSeguono = arrayRemovebuhhh(oldMiSeguono, myId);
 
 
-                    /*dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
-                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: result}})*/
+                    dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: result}})
                     
 
                     return response.send(resultuser[0].NomeUtente);
@@ -488,9 +493,9 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
                             
             });
         });
-    /*}else{
+    }else{
         return response.send('non sei autorizato');
-    }*/
+    }
 
 });
 
