@@ -402,13 +402,24 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
                     
             dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
                 if (err) throw err;
-
+                var myid = result[0]._id
                 var oldPinUserArr = result[0].Amici
                 
 
                 dbo.collection("Users").find({_id : ObjectId(userid)}).toArray(function(err, resultuser) {
                     oldPinUserArr.push({_id: userid});
+                    var oldMiSeguono;
+                    var newMiSeguono;
+                    if(resultuser[0].MiSeguono){
+                        oldMiSeguono = resultuser[0].MiSeguono
+                        newMiSeguono = oldMiSeguono.push({_id: myid})
+                    }
+                    else{
+                        oldMiSeguono = [{_id: myid}]
+                        newMiSeguono = oldMiSeguono
+                    }
 
+                    dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
                     dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})
 
                     return response.send(resultuser[0].NomeUtente);
