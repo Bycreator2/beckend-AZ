@@ -469,10 +469,10 @@ app.get('/removepinUser/:myemail/:mypass/:userid', (request, response) => {
 
                     var oldMiSeguono;
                     var newMiSeguono;
-                    if(resultuser[0].MiSeguono){
-                        oldMiSeguono = resultuser[0].MiSeguono
-                        newMiSeguono = arrayRemove(oldMiSeguono, myId);
-                    }
+                    
+                    oldMiSeguono = resultuser[0].MiSeguono
+                    newMiSeguono = arrayRemove(oldMiSeguono, myId);
+                    
 
 
                     dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
