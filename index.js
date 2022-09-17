@@ -414,12 +414,9 @@ app.get('/pinUser/:myemail/:mypass/:userid', (request, response) => {
                     if(resultuser[0].MiSeguono != undefined) {
                         oldMiSeguono = resultuser[0].MiSeguono
                         newMiSeguono = oldMiSeguono.push({_id: myid})
-                    }else if(resultuser[0].MiSeguono == []){
-                        oldMiSeguono = resultuser[0].MiSeguono
-                        newMiSeguono = oldMiSeguono.push({_id: myid})
                     }
                     else{
-                        oldMiSeguono = [{_id: myid}]
+                        oldMiSeguono = [{no:'no'},{_id: myid}]
                         newMiSeguono = oldMiSeguono
                     }
 
