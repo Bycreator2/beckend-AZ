@@ -370,7 +370,7 @@ app.get('/trovautente/:tag', (request, response) => {
                 dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
                     if (err) throw err;
                         
-                        return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount, Amici: result[0].Amici, MiSeguono: result[0].MiSeguono, Badge: result[0].Bedge}]);
+                        return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount, Amici: result[0].Amici, MiSeguono: result[0].MiSeguono, Badge: result[0].Badge}]);
                         
                     db.close();
                 });
