@@ -49,7 +49,7 @@ app.get('/', (request, response) => {
     return response.send(request.headers["X-API-Key"]);
 });
 
-/*app.get('/allanime', (request, response) => {
+app.get('/allanime', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
@@ -77,6 +77,24 @@ app.get('/nuovianime', (request, response) => {
         if (err) throw err;
         var dbo = db.db("animeDB");
         dbo.collection("Anime").find({}).sort({_id:-1}).limit(6).toArray(function(err, result) {
+            if (err) throw err;
+                return response.send(result);
+            db.close();
+        });
+    });
+
+});
+
+app.get('/riprendi', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Anime").find({}).sort({_id:-1}).limit(4).toArray(function(err, result) {
             if (err) throw err;
                 return response.send(result);
             db.close();
@@ -161,7 +179,7 @@ app.get('/nuoviepisodi', (request, response) => {
     
 
 });
-*/
+
 
 app.get('/cercaanimuser/:nomeanimeutente', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
@@ -369,8 +387,8 @@ app.get('/trovautente/:tag', (request, response) => {
                 var dbo = db.db("animeDB");
                 dbo.collection("Users").find({_id : ObjectId(tag)}).toArray(function(err, result) {
                     if (err) throw err;
-                        
-                        return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount, Amici: result[0].Amici, MiSeguono: result[0].MiSeguono, Badge: result[0].Badge}]);
+
+                        return response.send([{Tag: tag, NomeUtente: result[0].NomeUtente, Avatar: result[0].Avatar, DataAccount: result[0].DataAccount, Amici: result[0].Amici, MiSeguono: result[0].MiSeguono, AnimeVisti: result[0].AnimeVisti, Badge: result[0].Badge}]);
                         
                     db.close();
                 });
@@ -592,6 +610,163 @@ app.get('/avatar/:link/:email/:pass', (request, response) => {
 
 });
 
+
+app.get('/test1/:id', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        
+        var id = request.params.id;
+
+        var baseurl = 'https://www.animeworld.tv'
+
+
+        fetch(baseurl + '/play/' + id)
+            .then(res => res.text())
+            .then(text => {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(text, 'text/html');
+                var newsRow = parser.parseFromString(doc.getElementsByClassName('server active')[0].innerHTML, 'text/html');
+
+                var d = newsRow.rawHTML
+
+                return response.send(newsRow);
+                    
+            });
+
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
+
+app.get('/test/:base/:link', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var base = request.params.base;
+        var link = request.params.link;
+        
+        var baseurl = 'https://www.animeworld.tv'
+
+
+        fetch(baseurl + '/play/'+ base + '/' + link)
+            .then(res => res.text())
+            .then(text => {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(text, 'text/html');
+                var newsRow = parser.parseFromString(doc.getElementById('download').innerHTML, 'text/html');
+
+                var d = newsRow.rawHTML
+
+                return response.send(newsRow);
+                    
+            });
+
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
+app.get('/segnaanimevisto/:id/:email/:pass', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var id = request.params.id;
+        var email = request.params.email;
+        var pass = request.params.pass;
+
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+            
+            dbo.collection("Users").find({Email: email, Password: pass}).toArray(function(err, result) {
+                if (err) throw err;
+
+                    
+                    if(result[0].AnimeVisti) {
+                        oldAnimeVisti = result[0].AnimeVisti
+                        newAnimeVisti = oldAnimeVisti.push({_id: id})
+
+                        dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {AnimeVisti: oldAnimeVisti}})
+
+                        return response.send(result[0].NomeUtente);
+                    }
+                    else{
+                        oldAnimeVisti = [{_id:'no'},{_id: id}]
+                        newAnimeVisti = oldAnimeVisti
+
+                        dbo.collection("Users").updateOne({Email: email, Password: pass}, {$set: {AnimeVisti: oldAnimeVisti}})
+
+                        return response.send(result[0].NomeUtente);
+                    }
+
+                    /*dbo.collection("Users").updateOne({_id : ObjectId(userid)}, {$set: {MiSeguono: newMiSeguono}})
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {Amici: oldPinUserArr}})*/
+
+                
+                            
+            });
+
+        });
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
+app.get('/removeanimevisto/:myemail/:mypass/:id', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        var myemail = request.params.myemail;
+        var mypass = request.params.mypass;
+        var id = request.params.id;
+        
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+                    
+            dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+                if (err) throw err;
+
+                var oldPinUserArr = result[0].AnimeVisti
+                var myId = result[0]._id;
+                
+                    function arrayRemove(arr, value) { 
+        
+                        return arr.filter(function(ele){ 
+                            return ele._id != value; 
+                        });
+                    }
+
+
+                    var result = arrayRemove(oldPinUserArr, id);
+
+                    
+
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {AnimeVisti: result}})
+                    
+
+                    return response.send(result[0].NomeUtente);
+                    db.close();
+                            
+            });
+        });
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
 
 app.listen(process.env.PORT || 5000, () => {
     console.log('App is listening on port 5000');
