@@ -71,18 +71,17 @@ app.get('/nuovianime', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
-        //db
-        MongoClient.connect(uri, function(err, db) {
+    
+    //db
+    MongoClient.connect(uri, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("animeDB");
+        dbo.collection("Anime").find({}).sort({_id:-1}).limit(6).toArray(function(err, result) {
             if (err) throw err;
-            var dbo = db.db("animeDB");
-            dbo.collection("Anime").find({}).sort({_id:-1}).limit(6).toArray(function(err, result) {
-                if (err) throw err;
-                    return response.send(result);
-                db.close();
-            });
+                return response.send(result);
+            db.close();
         });
-    }
+    });
 
 });
 
