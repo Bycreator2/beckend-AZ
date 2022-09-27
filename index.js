@@ -9,8 +9,6 @@ var fs = require('fs');
 
 var nodemailer = require('nodemailer');
 
-var cors = require('cors');
-app.use(cors());
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
@@ -613,7 +611,6 @@ app.get('/avatar/:link/:email/:pass', (request, response) => {
 
 
 app.get('/test1/:id', (request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', '*');
 
     
         if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
