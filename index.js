@@ -10,7 +10,7 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 
 var cors = require('cors');
-app.use(cors());
+app.options('*', cors())
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
