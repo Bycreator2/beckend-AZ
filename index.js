@@ -4,6 +4,7 @@ var DOMParser = require('dom-parser');
 const { isMainThread } = require('worker_threads');
 const app = express();
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+var fs = require('fs');
 
 
 var nodemailer = require('nodemailer');
@@ -615,29 +616,59 @@ app.get('/test1/:id', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        //if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+            
+            var id = request.params.id;
+
+            var baseurl = 'https://www.animeworld.tv'
+
+            let PreLink = []
+
+            fetch(baseurl + '/play/' + id)
+                .then(res => res.text())
+                .then(text => {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(text, 'text/html');
+                    var newsRow = parser.parseFromString(doc.getElementsByClassName('server active')[0].innerHTML, 'text/html');
+
+                    const docs = parser.parseFromString(newsRow.getElementsByTagName("a")[0].getAttribute('href'), 'text/html');
+
+                    newsRow.getElementsByTagName("a").forEach((element, index) => {
+
+                        let d = element.getAttribute('href').replace('/play/'+id+'/', '')
+                        
+                            /*fetch(baseurl + '/play/'+ id + '/' + d)
+                                .then(res => res.text())
+                                .then(async textt => {
+                                    
+                                            delay(2000);
+
+                                            var doci = parser.parseFromString(textt, 'text/html');
+
+                                            var newsRoww = parser.parseFromString(doci.getElementById('download').innerHTML, 'text/html');
         
-        var id = request.params.id;
+                                            const vid = parser.parseFromString(newsRoww.getElementsByTagName("a")[1].getAttribute('href'), 'text/html');
+        
+                                            videoLink.push(vid.rawHTML)
+                                            console.log(videoLink.length)
+                                            if(videoLink.length == newsRow.getElementsByTagName("a").length){
+                                                return response.send(videoLink);
+                                            }
+        
+                                });*/
 
-        var baseurl = 'https://www.animeworld.tv'
-
-
-        fetch(baseurl + '/play/' + id)
-            .then(res => res.text())
-            .then(text => {
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(text, 'text/html');
-                var newsRow = parser.parseFromString(doc.getElementsByClassName('server active')[0].innerHTML, 'text/html');
-
-                var d = newsRow.rawHTML
-
-                return response.send(newsRow);
+                                PreLink.push(d)
+                        
+                    })
                     
-            });
 
-    }else{
-        return response.send('non sei autorizato');
-    }
+                    return response.send(PreLink);
+                        
+                });
+
+        /*}else{
+            return response.send('non sei autorizato');
+        }*/
 
 });
 
@@ -646,7 +677,7 @@ app.get('/test/:base/:link', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+    //if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
         var base = request.params.base;
         var link = request.params.link;
         
@@ -666,9 +697,9 @@ app.get('/test/:base/:link', (request, response) => {
                     
             });
 
-    }else{
+    /*}else{
         return response.send('non sei autorizato');
-    }
+    }*/
 
 });
 
