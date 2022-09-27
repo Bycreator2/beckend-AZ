@@ -10,7 +10,13 @@ var fs = require('fs');
 var nodemailer = require('nodemailer');
 
 var cors = require('cors');
-app.options('*', cors())
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    "preflightContinue": true,
+}
+app.options('*', cors(corsOptions))
+app.use(cors(corsOptions))
 
 //DB
 const MongoClient = require('mongodb').MongoClient;
