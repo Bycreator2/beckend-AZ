@@ -662,7 +662,7 @@ app.get('/test1/:id', (request, response) => {
         
                                 });*/
 
-                                PreLink.push(d)
+                                PreLink.push({_id: index, src: d})
                         
                     })
                     
