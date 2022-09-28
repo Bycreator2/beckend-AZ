@@ -695,37 +695,11 @@ app.get('/test/:base/:link', (request, response) => {
             .then(text => {
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(text, 'text/html');
-                var newsRow = parser.parseFromString(doc.getElementById('download')[1].innerHTML, 'text/html');
+                var newsRow = parser.parseFromString(doc.getElementById('download').innerHTML, 'text/html');
 
-                    newsRow.getElementsByTagName("a").forEach((element, index) => {
+                    var f = newsRow.getElementsByTagName("a")[1].getAttribute('href');
 
-                        let d = element.getAttribute('href')
-                        
-                            /*fetch(baseurl + '/play/'+ id + '/' + d)
-                                .then(res => res.text())
-                                .then(async textt => {
-                                    
-                                            delay(2000);
-
-                                            var doci = parser.parseFromString(textt, 'text/html');
-
-                                            var newsRoww = parser.parseFromString(doci.getElementById('download').innerHTML, 'text/html');
-        
-                                            const vid = parser.parseFromString(newsRoww.getElementsByTagName("a")[1].getAttribute('href'), 'text/html');
-        
-                                            videoLink.push(vid.rawHTML)
-                                            console.log(videoLink.length)
-                                            if(videoLink.length == newsRow.getElementsByTagName("a").length){
-                                                return response.send(videoLink);
-                                            }
-        
-                                });*/
-
-                                PreLink.push(d)
-                        
-                    })
-
-                return response.send(PreLink);
+                return response.send(f);
                     
             });
 
