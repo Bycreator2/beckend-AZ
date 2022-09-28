@@ -688,6 +688,7 @@ app.get('/test/:base/:link', (request, response) => {
         
         var baseurl = 'https://www.animeworld.tv'
 
+        let PreLink = []
 
         fetch(baseurl + '/play/'+ base + '/' + link)
             .then(res => res.text())
@@ -696,9 +697,35 @@ app.get('/test/:base/:link', (request, response) => {
                 var doc = parser.parseFromString(text, 'text/html');
                 var newsRow = parser.parseFromString(doc.getElementById('download').innerHTML, 'text/html');
 
-                var d = newsRow.rawHTML
+                    newsRow.getElementsByTagName("a").forEach((element, index) => {
 
-                return response.send(newsRow);
+                        let d = element.getAttribute('href')
+                        
+                            /*fetch(baseurl + '/play/'+ id + '/' + d)
+                                .then(res => res.text())
+                                .then(async textt => {
+                                    
+                                            delay(2000);
+
+                                            var doci = parser.parseFromString(textt, 'text/html');
+
+                                            var newsRoww = parser.parseFromString(doci.getElementById('download').innerHTML, 'text/html');
+        
+                                            const vid = parser.parseFromString(newsRoww.getElementsByTagName("a")[1].getAttribute('href'), 'text/html');
+        
+                                            videoLink.push(vid.rawHTML)
+                                            console.log(videoLink.length)
+                                            if(videoLink.length == newsRow.getElementsByTagName("a").length){
+                                                return response.send(videoLink);
+                                            }
+        
+                                });*/
+
+                                PreLink.push(d)
+                        
+                    })
+
+                return response.send(PreLink);
                     
             });
 
