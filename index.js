@@ -697,9 +697,11 @@ app.get('/test/:base/:link', (request, response) => {
                 var doc = parser.parseFromString(text, 'text/html');
                 var newsRow = parser.parseFromString(doc.getElementById('download').innerHTML, 'text/html');
 
-                    var f = newsRow.getElementsByTagName("a")[1].getAttribute('href');
+                var f = newsRow.getElementsByTagName("a")[1].getAttribute('href');
 
-                return response.send(f);
+                PreLink.push(f)
+
+                return response.send(PreLink);
                     
             });
 
