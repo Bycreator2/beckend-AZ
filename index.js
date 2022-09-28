@@ -695,7 +695,7 @@ app.get('/test/:base/:link', (request, response) => {
             .then(text => {
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(text, 'text/html');
-                var newsRow = parser.parseFromString(doc.getElementById('download').innerHTML, 'text/html');
+                var newsRow = parser.parseFromString(doc.getElementById('download')[1].innerHTML, 'text/html');
 
                     newsRow.getElementsByTagName("a").forEach((element, index) => {
 
