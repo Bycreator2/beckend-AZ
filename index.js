@@ -56,21 +56,56 @@ app.get('/', (request, response) => {
     return response.send(request.headers["X-API-Key"]);
 });
 
-app.get('/allanime', (request, response) => {
+app.get('/filtroanime/:filter', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-    
-    
-    //db
-    MongoClient.connect(uri, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("animeDB");
-        dbo.collection("Anime").find({}).toArray(function(err, result) {
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+
+        var filter = request.params.filter;
+
+        const arrfilter = filter.split(/[,.\s]/);
+
+
+        //var result = [new RegExp(arrfilter.join(","))];
+
+        var final = []
+
+
+        MongoClient.connect(uri, function(err, db) {
             if (err) throw err;
-                return response.send(result);
-            db.close();
+            var dbo = db.db("animeDB");
+
+            dbo.collection("Anime").find({}).toArray(function(err, result) {
+                if (err) throw err;
+
+                    result.forEach((element, index) => {
+
+                        var generi = element.Generi.replace(/ - /g, ',').split(/[,.\s]/)
+
+                        console.log(generi)
+                        console.log(arrfilter)
+
+                        const multipleExist = arrfilter.every(value => {
+                            return generi.includes(value);
+                        });
+
+                        if(multipleExist == true){
+                            final.push(element)
+                        }
+
+                        if(result.length-1 == index){
+                            return response.send(final);
+                        }
+
+                    });
+
+                db.close();
+            });
         });
-    });
+        
+    }else{
+        return response.send('non sei autorizato');
+    }
 
 });
 
