@@ -56,6 +56,28 @@ app.get('/', (request, response) => {
     return response.send(request.headers["X-API-Key"]);
 });
 
+app.get('/allanime', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+
+        //db
+        MongoClient.connect(uri, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("animeDB");
+
+            dbo.collection("Anime").find({}).toArray(function(err, result) {
+                    if (err) throw err;
+                        return response.send(result);
+                    });
+            });
+
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
 app.get('/filtroanime/:filter', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
