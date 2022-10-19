@@ -867,28 +867,30 @@ app.get('/removeanimevisto/:myemail/:mypass/:id', (request, response) => {
 app.get('/changeusername/:myemail/:mypass/:newname', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
-    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+    
         //username
         var myemail = request.params.myemail;
         //email
         var mypass = request.params.mypass;
         //pass
         var newname = request.params.newname;
-
-        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+        MongoClient.connect(uri, function(err, db) {
+            
             if (err) throw err;
+            var dbo = db.db("animeDB");
 
-                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {NomeUtente: newname}})
-                
+            dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+                if (err) throw err;
 
-                return response.send(result[0].NomeUtente);
-                db.close();
-                        
-        });
+                    dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {NomeUtente: newname}})
+                    
 
-    }else{
-        return response.send('non sei autorizato');
-    }
+                    return response.send(result[0].NomeUtente);
+                    db.close();
+                            
+            });
+
+        })
 
 });
 
