@@ -864,6 +864,34 @@ app.get('/removeanimevisto/:myemail/:mypass/:id', (request, response) => {
 
 });
 
+app.get('/changeusername/:myemail/:mypass/:newname', (request, response) => {
+    response.setHeader('Access-Control-Allow-Origin', '*');
+
+    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+        //username
+        var myemail = request.params.myemail;
+        //email
+        var mypass = request.params.mypass;
+        //pass
+        var newname = request.params.newname;
+
+        dbo.collection("Users").find({Email: myemail, Password: mypass}).toArray(function(err, result) {
+            if (err) throw err;
+
+                dbo.collection("Users").updateOne({Email: myemail, Password: mypass}, {$set: {NomeUtente: newname}})
+                
+
+                return response.send(result[0].NomeUtente);
+                db.close();
+                        
+        });
+
+    }else{
+        return response.send('non sei autorizato');
+    }
+
+});
+
 app.listen(process.env.PORT || 5000, () => {
     console.log('App is listening on port 5000');
 });
