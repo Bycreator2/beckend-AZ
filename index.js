@@ -678,7 +678,6 @@ app.get('/avatar/:link/:email/:pass', (request, response) => {
 app.get('/test1/:id', (request, response) => {
 
     
-        if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
             
             var id = request.params.id;
 
@@ -728,9 +727,6 @@ app.get('/test1/:id', (request, response) => {
                         
                 });
 
-        }else{
-            return response.send('non sei autorizato');
-        }
 
 });
 
@@ -739,7 +735,7 @@ app.get('/test/:base/:link', (request, response) => {
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     
-    if(request.headers.ciao == 'Basic ZW1hYWhoOjghUlEyeCUkJFU2Y05wdQ=='){
+    
         var base = request.params.base;
         var link = request.params.link;
         
@@ -761,10 +757,6 @@ app.get('/test/:base/:link', (request, response) => {
                 return response.send(PreLink);
                     
             });
-
-    }else{
-        return response.send('non sei autorizato');
-    }
 
 });
 
